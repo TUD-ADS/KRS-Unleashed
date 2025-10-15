@@ -1,0 +1,25 @@
+Project:
+  name: "smarobix_apriltag"
+  board: "KR260"
+  target_clock: "5ns"
+  vitis_library_path: "/opt/xilinx/Vitis-Libraries"
+  opencv_include_path: "/home/paul/.local/include/opencv4"
+  opencv_library_path: "/home/paul/.local/lib"
+  kernels:
+    - name: "decimate"
+      top_level_function: "cvtcolor_rgb2gray"
+      use_opencv: true
+      vitis_library: "vision"
+    - name: "blur"
+      top_level_function: "gaussian_filter_accel"
+      use_opencv: true
+      vitis_library: "vision"
+    - name: "threshold"
+      top_level_function: "adaptive_threshold"
+      use_opencv: true
+      vitis_library: "vision"
+  platform:
+    create_new: true
+    name: "kria_kr260_base_accel"
+    xsa_file_path: "/home/paul/Documents/Spielwiese/vitis-flow/artifacts/kria_kr260.xsa"
+    petalinux_dir: "/home/paul/Documents/HomDoc/Projects/firmware_kria_petalinux"

@@ -1,0 +1,21 @@
+build:
+  kr260:
+    cmake-args:
+      - "-DCMAKE_SYSTEM_NAME=Linux"
+      - "-DCMAKE_SYSTEM_VERSION=1"
+      - "-DCMAKE_SYSTEM_PROCESSOR=aarch64"
+      - "-DCMAKE_LIBRARY_ARCHITECTURE=aarch64-xilinx-linux"
+      - "-DCMAKE_C_COMPILER=/usr/bin/aarch64-xilinx-linux-gcc"
+      - "-DCMAKE_CXX_COMPILER=/usr/bin/aarch64-xilinx-linux-g++"
+      - "-DCMAKE_SYSROOT=/home/paul/Documents/HomDoc/Projects/firmware_kria_petalinux/sysroot/sysroots/cortexa72-cortexa53-xilinx-linux"      
+      - "-DCMAKE_FIND_ROOT_PATH=/home/paul/Documents/HomDoc/Projects/peta_krs_ws/install-kr260-ubuntu;/home/paul/Documents/HomDoc/Projects/firmware_kria_petalinux/sysroot/sysroots/cortexa72-cortexa53-xilinx-linux/usr"
+      - "-DCMAKE_INSTALL_RPATH=/home/paul/Documents/HomDoc/Projects/firmware_kria_petalinux/sysroot/sysroots/cortexa72-cortexa53-xilinx-linux/usr/lib"
+      - "-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=TRUE"
+      - "-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER"
+      - "-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY"
+      - "-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY"
+      - "-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY"
+      - "-DPYTHON_SOABI=cpython-37m-aarch64-linux-gnu"
+      - "-DTHREADS_PTHREAD_ARG=0"
+      - "--no-warn-unused-cli"
+      - "-DROS_VITIS_TARGET=TRUE"

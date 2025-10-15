@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="2">
+  <name>apriltag_accel</name>
+  <version>1.0.0</version>
+  <description> Apriltag Accelerators
+  </description>
+  <maintainer email="paul.gottschaldt@tu-dresden.de">Paul Gottschaldt</maintainer>
+  <license>Apache License 2.0</license>
+  <author email="paul.gottschaldt@tu-dresden.de">Paul Gottschaldt</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_vitis</buildtool_depend>  
+
+  <depend>cv_bridge</depend>
+  <depend>image_geometry</depend>
+  <depend>image_transport</depend>
+  <depend>rclcpp_components</depend>
+  <depend>adaptive_component</depend>
+  <depend>rcutils</depend>
+  <depend>sensor_msgs</depend>
+  <depend>tracetools_kernels</depend>
+
+  <build_depend>acceleration_firmware_kv260</build_depend>
+  <build_depend>vitis_common</build_depend>
+  <build_depend>rclcpp</build_depend>
+
+  <exec_depend>acceleration_firmware_kv260</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

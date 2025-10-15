@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="2">
+  <name>krs_firmware</name>
+  <version>2.0.0</version>
+  <description>
+    Slimed down version of the offical AMD KR260 vendor-specific Ubuntu 22.04 cross-compilation firmware.
+    The package contains only links to the actual firmware artifacts to accelerate ROS 2 robotic applications.
+  </description>
+  <maintainer email="paul.gottschaldt@tu-dresden.de">Paul Gottschaldt</maintainer>
+  <author email="paul.gottschaldt@tu-dresden.de">Paul Gottschaldt</author>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

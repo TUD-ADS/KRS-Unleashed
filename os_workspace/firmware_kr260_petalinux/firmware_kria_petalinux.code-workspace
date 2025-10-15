@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"search.exclude": {
+			"**/build_petalinux": true,
+			"**/sysroot": true
+		}
+	}
+}

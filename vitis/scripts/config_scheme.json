@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "Project": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "board": {
+          "type": "string",
+          "enum": [
+            "KR260",
+            "ZCU104",
+            "PYNQ-Z1",
+            "Ultra96-v2"
+          ]
+        },
+        "target_clock": {
+          "type": "string"
+        },
+        "vitis_library_path": {
+          "type": "string",
+          "pattern": "^/.+[^/]$"
+        },
+        "opencv_include_path": {
+          "type": "string",
+          "pattern": "^/.+[^/]$"
+        },
+        "opencv_library_path": {
+          "type": "string",
+          "pattern": "^/.+[^/]$"
+        },
+        "kernels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "top_level_function": {
+                "type": "string"
+              },
+              "use_opencv": {
+                "type": "boolean"
+              },
+              "vitis_library": {
+                "type": "string",
+                "enum": [
+                  "blas",
+                  "codec",
+                  "data_analytics",
+                  "data_compression",
+                  "database",
+                  "dsp",
+                  "genomics",
+                  "graph",
+                  "hpc",
+                  "quantitative_finance",
+                  "security",
+                  "solver",
+                  "sparse",
+                  "vision"
+                ],
+                "description": "Optional flag to indicate a vitis library to utilize as include dependency (Always L1)"
+              },
+              "add_host_code": {
+                "type": "boolean",
+                "description": "Optional flag to add host code; Results in the creation of an Application Component"
+              }
+            },
+            "required": [
+              "name",
+              "top_level_function"
+            ]
+          }
+        },
+        "platform": {
+          "type": "object",
+          "properties": {
+            "create_new": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            },
+            "xsa_file_path": {
+              "type": "string",
+              "pattern": "^.+\\.xsa$"
+            },
+            "petalinux_dir": {
+              "type": "string",
+              "pattern": "^/.+[^/]$"
+            }
+          },
+          "required": [
+            "create_new",
+            "name"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "board",
+        "target_clock",
+        "vitis_library_path",
+        "opencv_include_path",
+        "opencv_library_path",
+        "kernels",
+        "platform"
+      ]
+    }
+  },
+  "required": [
+    "Project"
+  ],
+  "additionalProperties": false
+}
