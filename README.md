@@ -1,6 +1,6 @@
 # Apriltag Demo Application
 
-* Apriltag demo using the Kria Robotic Stack
+* Apriltag demo using the Kria Robotic Stack Unleashed
 * accelerators for gray conversion, blur and adaptive thresholding, based on Vitis Vision library (2024.1)
 * internal: after check out run `git submodule update --init --recursive` to fetch all the code inside the submodules
 
