@@ -30,7 +30,6 @@ namespace apriltag_accel
       delete krnl_;
       delete context_;
       delete queue_;
-      delete tracer_;
 
     } // BlurFPGA destructor
 

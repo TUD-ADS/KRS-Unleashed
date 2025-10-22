@@ -34,7 +34,6 @@ sudo ln -s /home/paul/Documents/HomDoc/Projects/firmwares/firmware_kr260_ubuntu/
   2. cross-compile build, creates `build-kr260/` and `install-kr260/` folders; only the `install-kr260/` needs to be copied over to the board
 
 ### 1. Native System Build
-* `unset RMW_IMPLEMENTATION`
 * `source /opt/ros/humble.setup.<shell>` and `<Xilinx Installation>/Vitis/<version>/settings64.sh` (default is 2024.1 for KRS)
 * (Optionally:) in case you run multiple OpenCV versions, export `LD_LIBRARY_PATH`, `OPENCV_LIB` and `OPENCV_INCLUDE` accordingly
   * this is necessary, if you have them installed:
@@ -55,8 +54,8 @@ export LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH
 
 
 ### 2. Cross-Compile Build
-* `unset RMW_IMPLEMENTATION`
-* `source install/setup.<shell>`
+* open a new window and run:
+* `source /opt/ros/humble.setup.<shell>` and `<Xilinx Installation>/Vitis/<version>/settings64.sh` (default is 2024.1 for KRS)
 * run `colcon build --build-base=build-kr260 --install-base=install-kr260 --merge-install --mixin kr260 --cmake-args -DNOKERNELS=true -DCMAKE_BUILD_TYPE=Release` to create cross-compiled version in specific directories
 
 #### Old Style Kernel Synthesis
@@ -136,13 +135,26 @@ ros2 <run/launch> <package> <node/launch_file>
 
 
 ## FAQ
-* Current Measurements indicate the DDS configuration is highly important
+* Current Measurements indicate the DDS configuration is highly important for performance
 
-### OpenCV needs to be brought into path
+### Linker/Dependency Issues
+
+#### OpenCV needs to be brought into path
+* in case you install a second OpenCV version for Petalinux testing in Vitis, you need to set the environment variables to pick the right OpenCV version for native development
+* Important! this commands should not be in scope when cross-compiling, as these dependencies are built for your local machine and conflict; simply open a second terminal for the `colcon build --build-base=build-kr260 ...` command
 * run `export LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH`
 * run `export OPENCV_LIB=/usr/lib`
 * run `export OPENCV_INCLUDE=/usr/include/opencv4`
 
+#### RMW/DDS Dependency issues of unfound libraries
+* this can be caused if you install a different DDS like CycloneDDS on the ARM Image
+* directly compiling against it is not recommended, but sometimes not doing so causes issues if you dont have the default fully installed (FastDDS)
+* explore with `unset RMW_IMPLEMENTATION` before executing the colcon commands
+
+#### Tracetools
+* main issue here is that the ARM humble build does not include tracetools, so we need to add it as a local package
+* linker issues may arrise, if the wrong versions are picked up, therfore currently recommended to build first only the tracetools package for cross-compiling before continuing
+* via `colcon build --build-base=build-kr260 --install-base=install-kr260 --merge-install --mixin kr260 --cmake-args -DNOKERNELS=true -DCMAKE_BUILD_TYPE=Release --packages-select tracetools`
 
 ### Tracing
 * follow installation instructions

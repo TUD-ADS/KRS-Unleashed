@@ -21,5 +21,5 @@ Project:
   platform:
     create_new: true
     name: "kria_kr260_base_accel"
-    xsa_file_path: "/home/paul/Documents/Spielwiese/vitis-flow/artifacts/kria_kr260.xsa"
-    petalinux_dir: "/home/paul/Documents/HomDoc/Projects/firmware_kria_petalinux"
+    xsa_file_path: "/mnt/data/tmp/KRS-Unleashed/vitis/artifacts/kria_kr260.xsa"
+    petalinux_dir: "/mnt/data/tmp/KRS-Unleashed/os_workspace/firmware_kr260_petalinux"

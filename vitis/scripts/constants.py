@@ -51,7 +51,7 @@ class Constants:
                 "platform").get('petalinux_dir')
             self._petalinux_output_path = self._petalinux_path + "/build_petalinux/images/linux"
             self._sdk_path = self._petalinux_path + \
-                "/sysroots/cortexa72-cortexa53-xilinx-linux"
+                "/firmware/sysroots/cortexa72-cortexa53-xilinx-linux"
             self._dtb_path = self._petalinux_output_path + "/system.dtb"
             self._bif_path = ""
             self._fsbl_path = self._petalinux_output_path + "/zynqmp_fsbl.elf"

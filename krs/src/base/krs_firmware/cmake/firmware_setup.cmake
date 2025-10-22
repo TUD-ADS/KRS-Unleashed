@@ -5,7 +5,7 @@
 
 set(KRS_DEVICE kr260) #currently the only tested one
 set(KRS_OS ubuntu) #supported values are currently ['ubuntu', 'petalinux']
-set(FIRMWARE_DIR ${CMAKE_INSTALL_PREFIX}/../../../firmwares/firmware_kr260_ubuntu/firmware)  # <ws>/../firmware_kria_ubuntu
+set(FIRMWARE_DIR ${CMAKE_INSTALL_PREFIX}/../../os_workspace/firmware_kr260_ubuntu/firmware)  # <ws>/../firmware_kria_ubuntu
 
 # CMake checks
 ## KRS_DEVICE

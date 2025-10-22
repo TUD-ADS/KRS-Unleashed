@@ -1,0 +1,3 @@
+build_petalinux/
+firmware/
+artifacts/xilinx-kr260-starterkit-v2024.1-05230256.bsp
