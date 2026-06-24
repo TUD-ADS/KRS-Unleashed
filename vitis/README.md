@@ -20,7 +20,7 @@ source <path-to-xilinx>/Vitis/<version>/settings64.sh
 ### Petalinux
 * you will need the Linux artifacts from Petalinux
 * currently tested:
-  * flow based on [Petalinux Firmware Repo](https://git-ads.inf.tu-dresden.de/krs/firmware_kria_petalinux)
+  * flow based on the Petalinux firmware in `os_workspace/firmware_kr260_petalinux`
   * might also work with `ZYNQMP common image` from [Embedded Platform Download Page](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-platforms.html)
 
 
@@ -29,13 +29,13 @@ source <path-to-xilinx>/Vitis/<version>/settings64.sh
 
 * follow https://support.xilinx.com/s/article/Vitis-Libraries-Compiling-and-Installing-OpenCV?language=en_US
 ```bash
-cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=$HOME/.local -D WITH_V4L=ON -D OPENCV_EXTRA_MODULES_PATH=$HOME/Documents/Spielwiese/opencv-4.4.0/source_contrib/modules -DBUILD_TESTS=OFF -DBUILD_ZLIB=ON -DBUILD_JPEG=ON -DWITH_JPEG=ON -DWITH_PNG=ON -DBUILD_EXAMPLES=OFF -DINSTALL_C_EXAMPLES=OFF -DINSTALL_PYTHON_EXAMPLES=OFF -DWITH_OPENEXR=OFF -DBUILD_OPENEXR=OFF -D CMAKE_CXX_COMPILER=$XILINX_HLS/tps/lnx64/gcc-6.2.0/bin/g++ ..
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=$HOME/.local -D WITH_V4L=ON -D OPENCV_EXTRA_MODULES_PATH=<path-to>/opencv-4.4.0/source_contrib/modules -DBUILD_TESTS=OFF -DBUILD_ZLIB=ON -DBUILD_JPEG=ON -DWITH_JPEG=ON -DWITH_PNG=ON -DBUILD_EXAMPLES=OFF -DINSTALL_C_EXAMPLES=OFF -DINSTALL_PYTHON_EXAMPLES=OFF -DWITH_OPENEXR=OFF -DBUILD_OPENEXR=OFF -D CMAKE_CXX_COMPILER=$XILINX_HLS/tps/lnx64/gcc-6.2.0/bin/g++ ..
 ``` 
-* will result in installation at `~/.local
+* will result in installation at `~/.local`
 ```bash
-export LD_LIBRARY_PATH=/home/paul/.local/lib:$LD_LIBRARY_PATH
-export OPENCV_LIB=/home/paul/.local/lib 
-export OPENCV_INCLUDE=/home/paul/.local/include/opencv4
+export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
+export OPENCV_LIB=$HOME/.local/lib 
+export OPENCV_INCLUDE=$HOME/.local/include/opencv4
 ```
 
 * alternative OPENCV functionality is available in default Ubuntu under:
@@ -57,9 +57,9 @@ export OPENCV_LIB=/usr/lib/x86_64-linux-gnu
 * launch new terminal, only source Vitis 2024 (petalinux will cause error)
 * when using OpenCV for CSIM,.. make sure to add following env variables beforehand (adjust accordingly):
 ```bash
-export LD_LIBRARY_PATH=/home/paul/.local/lib:$LD_LIBRARY_PATH
-export OPENCV_LIB=/home/paul/.local/lib 
-export OPENCV_INCLUDE=/home/paul/.local/include/opencv4
+export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
+export OPENCV_LIB=$HOME/.local/lib 
+export OPENCV_INCLUDE=$HOME/.local/include/opencv4
 ```
 
 * check the configuration under `scripts/config.yaml`

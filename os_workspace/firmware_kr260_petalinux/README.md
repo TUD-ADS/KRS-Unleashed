@@ -85,7 +85,7 @@ It already integrates a working ROS2 installation.
 * `petalinux/build/tmp/sysroots-components/aarch64/`
 see also https://adaptivesupport.amd.com/s/question/0D52E00006mEc4wSAC/building-smartcam-app-error-missing-libcorrespondencea-?language=en_US
 
-### OpenCV version missmatch workaround
+### OpenCV version mismatch workaround
 dont question...
 
 ```bash
@@ -108,4 +108,4 @@ lttng module not found, but still tried to use it
 * these are only build with SWIG on Ubuntu and installed via apt install python3-lttng
 * see https://github.com/lttng/lttng-tools/blob/master/doc/python-howto.txt
 * as a workaround, we utilize the ARM binaries from the Ubuntu image under:
-* `firmware_kria_ubuntu/sysroots/aarch64-xilinx-linux/usr/lib/python3/dist-packages` and put them on the board under `/usr/lib/python3.10/` on the board
+* `firmware_kr260_ubuntu/sysroots/aarch64-xilinx-linux/usr/lib/python3/dist-packages` and put them on the board under `/usr/lib/python3.10/` on the board

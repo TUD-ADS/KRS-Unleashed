@@ -19,7 +19,7 @@ This repository provides AMD/Xilinx's firmware artifacts for the KR260 board usi
 To fetch it from sources, proceed as follows to include the Ubuntu 22.04 resources:
 
 ```bash
-git clone repo
+# from inside this firmware_kr260_ubuntu folder
 ./prepare_sysroot.sh
 ```
 * this downloads the Ubuntu SDK which we currently also use for cross-compiling against Petalinux
@@ -27,13 +27,13 @@ git clone repo
 
 ### Make Workspace Available
 * simple alter the cmake path inside `krs_repo/src/krs_firmware/cmake/firmware_setup.cmake`
-  * e.g. update `set(FIRMWARE_DIR ${CMAKE_INSTALL_PREFIX}/../../firmware_kr260_ubuntu/firmware)  # <ws>/../firmware_kria_ubuntu`
+  * e.g. update `set(FIRMWARE_DIR ${CMAKE_INSTALL_PREFIX}/../../firmware_kr260_ubuntu/firmware)  # <ws>/../firmware_kr260_ubuntu`
 
 
 ## FAQ
 
 ### Installing Dependencies on the SD Card
-* as Ubuntu/Cannonical does not provide a way to create an Image yourself, you have to manually install everything on the board by connecting it to the internet
+* as Ubuntu/Canonical does not provide a way to create an Image yourself, you have to manually install everything on the board by connecting it to the internet
   * alternatively, you can also download the `.deb` files on your development machine and move them over via `scp`
 
 ### Altering the Sysroot

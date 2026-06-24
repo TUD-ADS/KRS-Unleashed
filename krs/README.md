@@ -1,6 +1,8 @@
-# KRS Aprilag Repo
+# KRS Unleashed — ROS 2 Workspace
 
-In this simple project number of technologies are utilized:
+This is the **ROS 2 workspace** of KRS Unleashed: the AprilTag demo application, the host code that drives the FPGA kernels, and the cross-compilation tooling. **This README is the authoritative build guide** — start here once the OS workspace is prepared (see the top-level README).
+
+In this project a number of technologies are utilized:
 - [AMD Kria 260](https://xilinx.github.io/kria-apps-docs/home/build/html/index.html), a board which is well-suited for robotics.
 - [AMD Vitis :tm:](https://www.amd.com/en/products/software/adaptive-socs-and-fpgas/vitis.html), a platform to develop solutions for FPGA.
 - [Kria Robotics stack](https://xilinx.github.io/KRS/sphinx/build/html/index.html), a ROS 2 set of tools, nodes, and libraries to deploy hardware-accelerated solutions to Kria SOMs.
@@ -12,21 +14,21 @@ In this simple project number of technologies are utilized:
 ### Ubuntu on KR260
 * even when only using the Ubuntu OS, it is recommend to clone the Petalinux environment as well, as it is necessary for the Vitis Flow
 - KR260 board with Ubuntu 22.04, which you set up following [this guide](https://www.amd.com/en/products/system-on-modules/kria/k26/kr260-robotics-starter-kit/getting-started/setting-up-the-sd-card-image.html).
-- clone the [Ubuntu Firmware](https://git-ads.inf.tu-dresden.de/krs/firmware_kr260_ubuntu) outside of this repo and follow readme to configure the sysroot
-* Prepare system for cross compilation (right now only works for Ubuntu, but Petalinux can be build with same dependencies)
+- prepare the Ubuntu firmware in the `os_workspace/firmware_kr260_ubuntu` folder and follow its README to configure the sysroot
+* Prepare system for cross compilation (right now only works for Ubuntu, but Petalinux can be built with same dependencies)
   * this will create the missing python on your development system from the used sysroot
   * important, use the full path otherwise will not work
 ```bash 
-sudo ln -s /home/paul/Documents/HomDoc/Projects/firmwares/firmware_kr260_ubuntu/firmware/sysroots/aarch64-xilinx-linux/usr/lib/aarch64-linux-gnu/libpython3.10.so.1.0 /usr/lib/aarch64-linux-gnu/libpython3.10.so -f
+sudo ln -s <firmware_kr260_ubuntu>/firmware/sysroots/aarch64-xilinx-linux/usr/lib/aarch64-linux-gnu/libpython3.10.so.1.0 /usr/lib/aarch64-linux-gnu/libpython3.10.so -f
 ```
 
 ### Petalinux on KR260
-- build Petalinux-based firmware yourself via [ROS 2 Petalinux Firmware](https://git-ads.inf.tu-dresden.de/krs/firmware_kr260)
+- prepare the Petalinux firmware in the `os_workspace/firmware_kr260_petalinux` folder
 - currently still requires the Ubuntu Firmware sysroot due to a meta-ros bug
 
 ### This Repo
 * clone this repo and follow via `git submodule update --init --recursive` to fetch all the referenced repositories
-* afterwards, navigate inside the `src/krs_firmware` repo and configure the sysroot links (check out [README](src/krs_firmware/README.md))
+* afterwards, navigate inside the `src/base/krs_firmware` repo and configure the sysroot links (check out [README](src/base/krs_firmware/README.md))
 
 ## Build
 * the build is organized in 2 phases:
@@ -44,7 +46,7 @@ export LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH
 ```
 * run `export PATH="/usr/bin":$PATH` to override Xilinx cmake version back to default version (necessary for ROS)
 
-* run the first build command `colcon build --merge-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON-DCMAKE_BUILD_TYPE=Release` (cmake-args are optional here for VSCode environment; Release tells compiler to optimize code further)
+* run the first build command `colcon build --merge-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release` (cmake-args are optional here for VSCode environment; Release tells compiler to optimize code further)
   * takes now only ~40s
 * this will prepare a native build environment without `ROS_VITIS`, you can now run everything locally via `source install/setup.<shell>`
 
@@ -73,7 +75,7 @@ export LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH
 * `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON` for vscode syntax highlighting
 * `-DCMAKE_BUILD_TYPE=Release` faster c code (like -O3)
 * ` --merge-install` necessary to allow --build-base,.. in the next step, otherwise files are always put into `install/`
-* `--build-base=build-kr260` `--install-base=install-kr260` just specfiy the paths; they need to match the path in the mixin file generated, check
+* `--build-base=build-kr260` `--install-base=install-kr260` just specify the paths; they need to match the path in the mixin file generated, check
 * `--mixin kr260` loads the mixin values into cmake
 * `-DNOKERNELS=true` special flag for `ament_vitis` to skip synthesis
 
@@ -195,7 +197,7 @@ ros2 trace -u 'ros2:rcl_init', 'ros2:rcl_node_init', 'ros2:rmw_publisher_init', 
 
 ### Current Petalinux Issue
 
-#### OpenCV version missmatch due to not actually cross-compiling against sysroot
+#### OpenCV version mismatch due to not actually cross-compiling against sysroot
 dont question...
 ```bash
 sudo ln -s /usr/lib/libopencv_imgproc.so.4.6.0 /usr/lib/libopencv_imgproc.so.4.5d
@@ -213,8 +215,8 @@ press enter to start...
 lttng module not found, but still tried to use it
 ```
 
-* these are only build with `SWIG` on Ubuntu and installed via `apt install python3-lttng`
+* these are only built with `SWIG` on Ubuntu and installed via `apt install python3-lttng`
 * see https://github.com/lttng/lttng-tools/blob/master/doc/python-howto.txt
 * as a workaround, we utilize the ARM binaries from the Ubuntu image under:
-  * `firmware_kria_ubuntu/sysroots/aarch64-xilinx-linux/usr/lib/python3/dist-packages`
+  * `firmware_kr260_ubuntu/sysroots/aarch64-xilinx-linux/usr/lib/python3/dist-packages`
   * and put them on the board under `/usr/lib/python3.10/` on the board

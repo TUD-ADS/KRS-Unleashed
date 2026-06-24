@@ -1,17 +1,27 @@
 # KRS Unleashed
 
-<img width="726" height="429" alt="image" src="https://github.com/user-attachments/assets/0175b876-3983-4232-aed0-95284224bef6" />
+<img width="726" height="429" alt="High-level architecture overview of KRS Unleashed" src="https://github.com/user-attachments/assets/0175b876-3983-4232-aed0-95284224bef6" />
 
+*Architecture overview of KRS Unleashed. The original KRS's single ROS 2 workspace was separated into three workspaces.*
 
 This repository implements an example Apriltag Demo Application using the newly developed KRS Unleashed flow in Ubuntu 22.04 (ROS 2 humble).
 The Code is an architectural redesign of the original [Kria Robotics Stack](https://xilinx.github.io/KRS/sphinx/build/html/index.html) into 3 separate workspaces represented here via the 3 top-level folders:
-* `krs`: the original, slimed-down ROS 2 workspace containing the application, the host code for FPGA acceleration inside nodes and hardware acceleration utilities necessary for cross-compilation,..
+* `krs`: the original, slimmed-down ROS 2 workspace containing the application, the host code for FPGA acceleration inside nodes and hardware acceleration utilities necessary for cross-compilation,..
 * `os_workspace`: the firmware (OS to be put on the FPGA CPU) including scripts to generate a sysroot (target file system) for cross-compilation; Currently contains Ubuntu 22.04 and Petalinux 2024.1
-* `Vitis`: a newly devised Vitis Workspace Flow automating many steps of the Vitis Unified Software Platform via Python to generate the partial bitstream (.xclbin) via the Vitis Flow (.xo kernels linked via v++). The flow can be run semi-automatically and the Vitis Workspace opened and manually interferred at any given time.
+* `Vitis`: a newly devised Vitis Workspace Flow automating many steps of the Vitis Unified Software Platform via Python to generate the partial bitstream (.xclbin) via the Vitis Flow (.xo kernels linked via v++). The flow can be run semi-automatically and the Vitis Workspace opened and manually inspected and modified at any given time.
 
 ---
+## Main Benefits
+* decoupling cuts recurrent build times by up to 80 times (for reusable artifacts like sysroot creation)
+* allows individual components of the stack to be used in other solutions without using the whole flow:
+  * `kernel_tracetools`: a low-overhead LTTng tracing module that extends ros-tracing with user/application code tracing capabilities for dedicated regions, regions can be defined arbitrarily (no FPGA required)
+  * `Vitis` an automated, scripted Vitis HLS -> .xclbin + pl.dtbo flow that allows to easily automate mass kernel synthesis via Python CLI but still gives you a fully built Vitis Workspace for customization (Useful for any Vitis HLS developer)
+  * `os_workspace` + `krs/src/firmware`: scripted cross-compilation flow including sysroot and colcon mixin generation (portable to other devices, requires minimal adjustments)
 
-<img width="728" height="301" alt="image" src="https://github.com/user-attachments/assets/623906d6-2416-47d6-969e-ff68eb25eb6a" />
+
+<img width="728" height="301" alt="Proposed development workflow of KRS Unleashed across the three workspaces" src="https://github.com/user-attachments/assets/623906d6-2416-47d6-969e-ff68eb25eb6a" />
+
+*Proposed development flow of KRS Unleashed. The workspaces have a logical order, but intermediary results can also be used to enable parallel development. Fat arrows highlight new capabilities.*
 
 The proposed workflow is explained in detail in a hackster series:
 * [1. Getting Started](https://www.hackster.io/paul-gottschaldt/krs-unleashed-1-getting-started-5c38f3)
@@ -52,17 +62,15 @@ TU Dresden, Chair of Adaptive Dynamic Systems
 #### 1.1 Ubuntu on KR260
 * even when only using the Ubuntu OS, it is recommend to clone the Petalinux environment as well, as it is still necessary for the Vitis Flow
 - KR260 board with Ubuntu 22.04, which you set up following [this guide](https://www.amd.com/en/products/system-on-modules/kria/k26/kr260-robotics-starter-kit/getting-started/setting-up-the-sd-card-image.html).
-- public: firmware should be in the `os_workspace/firmware_kr260_ubuntu` folder
-- internal: clone the [Ubuntu Firmware](https://git-ads.inf.tu-dresden.de/krs/firmware_kr260_ubuntu) outside of this repo and follow readme to configure the sysroot
-* Prepare system for cross compilation (right now only works for Ubuntu, but Petalinux can be build with same dependencies)
+- firmware should be in the `os_workspace/firmware_kr260_ubuntu` folder
+* Prepare system for cross compilation (right now only works for Ubuntu, but Petalinux can be built with same dependencies)
   * this will create the missing python on your development system from the used sysroot (make sure to use full paths not relative)
 ```bash 
 sudo ln -s <firmware_kr260_ubuntu>/firmware/sysroots/aarch64-xilinx-linux/usr/lib/aarch64-linux-gnu/libpython3.10.so.1.0 /usr/lib/aarch64-linux-gnu/libpython3.10.so -f
 ```
 
 #### 1.2 Petalinux on KR260
-- public: firmware should be in the `os_workspace/kr260_petalinux` folder
-- internal: build Petalinux-based firmware yourself via [ROS 2 Petalinux Firmware](https://git-ads.inf.tu-dresden.de/krs/firmware_kr260)
+- firmware should be in the `os_workspace/kr260_petalinux` folder
 - currently still requires the Ubuntu Firmware sysroot due to a meta-ros bug (v2024.1)
 
 
@@ -71,7 +79,7 @@ sudo ln -s <firmware_kr260_ubuntu>/firmware/sysroots/aarch64-xilinx-linux/usr/li
 * afterwards, navigate inside the `src/base/krs_firmware` repo and configure the sysroot links (check out [README](krs_firmware/README.md))
 
 #### 3. Vitis Workspace
-* follow instructions inside `vitis`
+* follow instructions inside `Vitis`
 * you should end up with a `export_xxx` folder containing all the necessary files to be put on the board
 
 #### 4. Run the Board
